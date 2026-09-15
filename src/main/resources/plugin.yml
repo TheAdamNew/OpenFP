@@ -1,0 +1,85 @@
+name: FortunePillars
+version: 1.0.0
+main: com.fortunepillars.FortunePillars
+api-version: '1.21'
+author: geturplugins
+description: A fun fortune pillars minigame plugin
+website: https://discord.com/invite/5Dt9qEmY7P
+
+commands:
+  tof:
+    description: Main FortunePillars command
+    usage: /<command> [args]
+    aliases: [fortunepillars, fp, arena]
+
+  lootdebug:
+    description: Debug loot system
+    usage: /lootdebug <tables|forceloot|testdrop|inspect|reload>
+    permission: fortunepillars.admin
+    aliases: [ld, lootd]
+
+  dbdebug:
+    description: Debug database system
+    usage: /dbdebug <check|top|testwin|testkill|testgame|create|info>
+    permission: fortunepillars.admin
+    aliases: [dbd, dbg]
+
+permissions:
+  fortunepillars.*:
+    description: All FortunePillars permissions
+    children:
+      fortunepillars.player: true
+      fortunepillars.admin: true
+
+  fortunepillars.player:
+    description: Basic player permissions
+    default: true
+    children:
+      fortunepillars.join: true
+      fortunepillars.leave: true
+      fortunepillars.stats: true
+      fortunepillars.vote: true
+      fortunepillars.cosmetics: true
+      fortunepillars.scoreboard: true
+
+  fortunepillars.admin:
+    description: Admin permissions
+    default: op
+    children:
+      fortunepillars.arena.create: true
+      fortunepillars.arena.delete: true
+      fortunepillars.arena.setup: true
+      fortunepillars.arena.forcestart: true
+      fortunepillars.arena.forceend: true
+      fortunepillars.reload: true
+      fortunepillars.lootedit: true
+
+  # Loot Editor Permission
+  fortunepillars.lootedit:
+    description: Access to loot editor GUI
+    default: op
+
+  # Cosmetic permissions
+  fortunepillars.cosmetic.cage.*:
+    description: All cage colors
+    children:
+      fortunepillars.cosmetic.cage.clear: true
+      fortunepillars.cosmetic.cage.tinted: true
+      fortunepillars.cosmetic.cage.rainbow: true
+      fortunepillars.cosmetic.cage.obsidian: true
+      fortunepillars.cosmetic.cage.diamond: true
+      fortunepillars.cosmetic.cage.bedrock: true
+
+  fortunepillars.cosmetic.win.*:
+    description: All win effects
+    children:
+      fortunepillars.cosmetic.win.lightning: true
+      fortunepillars.cosmetic.win.explosion: true
+      fortunepillars.cosmetic.win.dragon: true
+      fortunepillars.cosmetic.win.rainbow: true
+      fortunepillars.cosmetic.win.enderdragon: true
+      fortunepillars.cosmetic.win.wither: true
+      fortunepillars.cosmetic.win.mega: true
+
+depend: []
+softdepend: [PlaceholderAPI]

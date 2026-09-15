@@ -1,0 +1,75 @@
+# ============================================
+# FortunePillars Messages
+# Supports MiniMessage format
+# ============================================
+
+# Plugin prefix
+prefix: "<gradient:#FFD700:#FFA500><bold>FortunePillars</bold></gradient> <dark_gray>»</dark_gray> "
+
+# General Messages
+no-permission: "<red>You don't have permission to do that!"
+player-only: "<red>This command can only be used by players!"
+config-reloaded: "<green>Configuration reloaded!"
+
+# Arena Management
+arena-created: "<green>Arena <yellow>{arena}</yellow> has been created!"
+arena-deleted: "<green>Arena <yellow>{arena}</yellow> has been deleted!"
+arena-not-found: "<red>Arena <yellow>{arena}</yellow> was not found!"
+arena-exists: "<red>Arena <yellow>{arena}</yellow> already exists!"
+pos1-set: "<green>Position 1 set for arena <yellow>{arena}</yellow>!"
+pos2-set: "<green>Position 2 set for arena <yellow>{arena}</yellow>!"
+cage-set: "<green>Cage {number} set for arena <yellow>{arena}</yellow>!"
+spectator-spawn-set: "<green>Spectator spawn set for arena <yellow>{arena}</yellow>!"
+schematic-saved: "<green>Arena schematic saved successfully!"
+arena-reset: "<green>Arena has been reset to original state!"
+
+# Joining/Leaving
+joined-arena: "<green>You joined arena <yellow>{arena}</yellow>! <gray>({current}/{max})"
+left-arena: "<red>You left the arena."
+arena-full: "<red>This arena is full!"
+already-in-game: "<red>You're already in a game!"
+not-in-game: "<red>You're not in a game!"
+no-arenas-available: "<red>No arenas are currently available!"
+quick-join-found: "<green>Joining arena: <yellow>{arena}</yellow>"
+
+# Game Flow
+game-starting: "<yellow>Game starting in <gold>{seconds}</gold> seconds!"
+game-started: "<green><bold>⚔ GAME STARTED! ⚔</bold></green> <gray>Good luck!"
+game-ended: "<gold><bold>★ GAME OVER! ★</bold></gold>"
+countdown: "<yellow><bold>{seconds}</bold></yellow>"
+game-in-progress: "<red>This game is already in progress!"
+not-enough-players: "<red>Not enough players! Need at least <yellow>{min}</yellow>."
+
+# Combat
+player-eliminated: "<red>☠</red> <gray>{player} eliminated! <dark_gray>({remaining} left)"
+player-won: "<gold><bold>★ VICTORY! ★</bold></gold> <yellow>{player}</yellow> wins!"
+grace-period-start: "<aqua>⚐ Grace period! <gray>No PvP for {seconds}s."
+grace-period-end: "<red><bold>⚔ PVP ENABLED! ⚔</bold></red>"
+
+# Voting
+vote-cast: "<green>You voted for <yellow>{mode}</yellow>!"
+vote-mode-selected: "<gold>Game mode: <yellow><bold>{mode}</bold></yellow>!"
+
+# Game Modes
+swapper-warning: "<yellow>⚠ Swapping in <red>5</red> seconds!"
+swapper-swap: "<light_purple><bold>↔ SWAP! ↔</bold></light_purple>"
+shuffle-warning: "<yellow>⚠ Shuffling in <red>5</red> seconds!"
+shuffle-shuffle: "<light_purple><bold>🔀 SHUFFLE! 🔀</bold></light_purple>"
+
+# Loot
+loot-received: "<green>+{count} item(s)!</green>"
+
+# Spectating
+now-spectating: "<gray>Spectating. <italic>/tof leave to exit.</italic>"
+
+# ============================================
+# World Blacklist Messages
+# ============================================
+blacklist-disabled-world: "<red>⚠ FortunePillars is disabled in this world!"
+blacklist-world-added: "<green>World <yellow>{world}</yellow> added to blacklist!"
+blacklist-world-removed: "<green>World <yellow>{world}</yellow> removed from blacklist!"
+blacklist-world-not-found: "<red>World <yellow>{world}</yellow> not found!"
+blacklist-empty: "<yellow>No worlds are blacklisted."
+blacklist-usage: "<red>Usage: /tof blacklistworld <add|remove|list> [world]"
+blacklist-usage-add: "<red>Usage: /tof blacklistworld add <world>"
+blacklist-usage-remove: "<red>Usage: /tof blacklistworld remove <world>"

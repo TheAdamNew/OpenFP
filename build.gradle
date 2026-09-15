@@ -1,0 +1,62 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.fortunepillars'
+version = '4.5.0'
+description = 'FortunePillars - Advanced Mini-Game Plugin'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+repositories {
+    mavenCentral()
+    maven { url = 'https://repo.papermc.io/repository/maven-public/' }
+    maven { url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/' }
+}
+
+dependencies {
+    compileOnly 'io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT'
+    compileOnly 'org.xerial:sqlite-jdbc:3.45.1.0'
+    compileOnly 'me.clip:placeholderapi:2.11.5'
+    compileOnly 'org.jetbrains:annotations:24.1.0'
+
+    implementation 'com.zaxxer:HikariCP:5.1.0'
+    implementation 'org.slf4j:slf4j-api:2.0.13'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.compilerArgs.add('-parameters')
+    options.release = 21
+}
+
+processResources {
+    filesMatching(['plugin.yml', 'config.yml', 'messages.yml']) {
+        expand(
+            'project': project.properties,
+            'version': project.version
+        )
+    }
+}
+
+jar {
+    archiveBaseName.set('FortunePillars')
+    archiveVersion.set("${project.version}")
+
+    manifest {
+        attributes(
+            'Implementation-Title': project.name,
+            'Implementation-Version': project.version,
+            'Built-By': 'gradle'
+        )
+    }
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}

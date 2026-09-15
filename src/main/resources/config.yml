@@ -1,0 +1,795 @@
+# ===========================================
+# FortunePillars Configuration
+# Compatible with Paper 1.21x
+# ===========================================
+#
+# 🎮 Official Discord: https://discord.gg/xctckUQukB
+# 📚 Need help? Join our community for support!
+#
+# ===========================================
+
+# Database Settings
+database:
+  type: sqlite # sqlite or mysql
+  mysql:
+    host: localhost
+    port: 3306
+    database: fortunepillars
+    username: root
+    password: password
+    pool-size: 10
+
+# Game Settings
+game:
+  min-players: 2
+  max-players: 8
+  countdown-seconds: 30
+  grace-period-seconds: 10 # No PvP at start
+
+# ===========================================
+# VOTING SYSTEM
+# ===========================================
+voting:
+  # Set to false to skip voting entirely and start game immediately
+  # with the arena's default game mode and default loot mode
+  enabled: true
+
+# ===========================================
+# NOTIFICATIONS
+# ===========================================
+notifications:
+  # Chat notifications (broadcast messages in chat)
+  chat:
+    # Master toggle for ALL chat notifications sent by the plugin
+    enabled: true
+
+    # Individual notification toggles (only matter if chat.enabled = true)
+    player-join: true           # "{player} joined arena ({current}/{max})"
+    player-leave: true          # "You left the arena."
+    countdown: true             # "Game starting in X seconds!"
+    game-started: true          # "GAME STARTED!"
+    game-ended: true            # "GAME OVER!"
+    player-eliminated: true     # "{player} eliminated! (X left)"
+    player-won: true            # "{player} wins!"
+    grace-period-start: true    # "Grace period active!"
+    grace-period-end: true      # "PVP ENABLED!"
+    vote-cast: true             # "{player} voted for ..."
+    game-settings: true         # Game mode/loot mode info at game start
+    arena-restored: true        # "Arena X is ready for the next game!"
+    no-schematic-error: true    # "Arena X cannot regenerate - no schematic!"
+    not-enough-players: true    # "Not enough players!"
+    swapper-warning: true       # "Positions swapping in 5 seconds!"
+    swapper-swap: true          # "SWAP!"
+    shuffle-warning: true       # "Inventories shuffling in 5 seconds!"
+    shuffle-shuffle: true       # "SHUFFLE!"
+    loot-drop-countdown: true    # "Next loot drop in X seconds!"
+    loot-drop: true              # "Loot Drop! (X normal items)"
+    loot-received: true          # Personal pickup msg
+
+  # Countdown Boss Bar
+  bossbar:
+    # Show countdown as a boss bar during STARTING phase
+    enabled: false
+    color: YELLOW               # PINK, BLUE, RED, GREEN, YELLOW, PURPLE, WHITE
+    style: PROGRESS             # PROGRESS, NOTCHED_6, NOTCHED_10, NOTCHED_12, NOTCHED_20
+
+  # Countdown Action Bar
+  actionbar:
+    # Show countdown as action bar during STARTING phase
+    enabled: false
+
+# ===========================================
+# LOOT SETTINGS
+# ===========================================
+loot:
+  interval-min: 3 # seconds between loot drops (minimum)
+  interval-max: 5 # seconds between loot drops (maximum)
+  items-min: 1    # minimum items per drop
+  items-max: 3    # maximum items per drop
+  include-spawn-eggs: true
+
+  # ========================
+  # DEFAULT LOOT MODE
+  # ========================
+  # Used when no players vote for a loot mode
+  #
+  # FULL OPTIONS:
+  #   SINGLE_NORMAL_SLOW, SINGLE_NORMAL_MEDIUM, SINGLE_NORMAL_FAST
+  #   SINGLE_BALANCED_SLOW, SINGLE_BALANCED_MEDIUM, SINGLE_BALANCED_FAST
+  #   SINGLE_OP_SLOW, SINGLE_OP_MEDIUM, SINGLE_OP_FAST
+  #   MULTI_NORMAL_SLOW, MULTI_NORMAL_MEDIUM, MULTI_NORMAL_FAST
+  #   MULTI_BALANCED_SLOW, MULTI_BALANCED_MEDIUM, MULTI_BALANCED_FAST
+  #   MULTI_OP_SLOW, MULTI_OP_MEDIUM, MULTI_OP_FAST
+  #
+  # SHORTHAND OPTIONS (defaults to MEDIUM timing):
+  #   SINGLE, MULTI (defaults to NORMAL tier)
+  #   SINGLE_NORMAL, SINGLE_BALANCED, SINGLE_OP
+  #   MULTI_NORMAL, MULTI_BALANCED, MULTI_OP
+  #   NORMAL, BALANCED, OP (defaults to MULTI style)
+  #
+  default-loot-mode: "SINGLE_NORMAL_MEDIUM"
+
+  # ========================
+  # CUSTOM LOOT CONFIGURATION GUIDE
+  # ========================
+  #
+  # 📖 HOW TO ADD/EDIT/REMOVE LOOT ITEMS:
+  #
+  # ✅ TO ADD NEW ITEMS:
+  #    1. Uncomment the tier section (remove the #)
+  #    2. Add your item using the format below
+  #    3. Save and run /tof reload
+  #
+  # ✅ TO EDIT EXISTING ITEMS:
+  #    1. Find the item in the 'remove-defaults' section
+  #    2. Add it to remove list to disable default
+  #    3. Add your custom version in 'custom-items' with new values
+  #
+  # ✅ TO REMOVE DEFAULT ITEMS:
+  #    1. Add the material name to the 'remove-defaults' list
+  #    2. Default items with that material will NOT spawn
+  #
+  # 📋 ITEM FORMAT:
+  #    "MATERIAL"                           → 1 item, weight 10 (default)
+  #    "MATERIAL:amount"                    → specific amount, weight 10
+  #    "MATERIAL:amount:weight"             → amount + custom weight
+  #    "MATERIAL:minAmount:maxAmount:weight" → random range + weight
+  #
+  # 💡 WEIGHT SYSTEM:
+  #    - Higher weight = more common
+  #    - Weight 1 = very rare (0.5-1% chance)
+  #    - Weight 5 = rare (2-5% chance)
+  #    - Weight 10 = common (5-10% chance)
+  #    - Weight 15 = very common (10-15% chance)
+  #
+  # 🎯 EXAMPLES:
+  #    "DIAMOND:1:2"              → 1 diamond, weight 2 (rare)
+  #    "COBBLESTONE:32:64:15"     → 32-64 cobblestone, weight 15 (very common)
+  #    "NETHERITE_INGOT:1:1:1"    → 1 netherite, weight 1 (extremely rare)
+  #    "IRON_INGOT:4:12:8"        → 4-12 iron, weight 8 (common)
+  #    "GOLDEN_APPLE:2:4:5"       → 2-4 golden apples, weight 5 (uncommon)
+  #
+  # 🚫 REMOVE DEFAULT ITEMS:
+  #    Just add the material name to remove it from drops:
+  #
+  #    remove-defaults:
+  #      normal:
+  #        - "WOODEN_SWORD"    # Removes all wooden swords from normal tier
+  #        - "LEATHER_HELMET"  # Removes leather helmets
+  #        - "DIRT"            # Removes dirt
+  #
+  # ⚠️ IMPORTANT NOTES:
+  #    - Material names MUST be valid Minecraft materials (case-sensitive)
+  #    - Check valid materials: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
+  #    - Weights don't need to add up to 100 (they're relative)
+  #    - Use /tof reload after making changes
+  #    - Items in 'all' tier will appear in EVERY tier
+  #
+  # 💬 Need Help? Join Discord: https://discord.gg/xctckUQukB
+  #
+  # ========================
+
+  # Remove specific default items from loot tables
+  # Add material names here to prevent them from spawning
+  remove-defaults:
+    normal: []
+      # Example: Remove wooden tools and leather armor from normal tier
+      # - "WOODEN_SWORD"
+      # - "WOODEN_AXE"
+      # - "LEATHER_HELMET"
+      # - "LEATHER_CHESTPLATE"
+      # - "LEATHER_LEGGINGS"
+      # - "LEATHER_BOOTS"
+      # - "DIRT"
+    # - "COBBLESTONE"
+
+    balanced: []
+      # Example: Remove specific items from balanced tier
+      # - "STONE_SWORD"
+    # - "CHAINMAIL_HELMET"
+
+    op: []
+      # Example: Remove items from OP tier
+      # - "DIAMOND_HELMET"
+    # - "NETHERITE_SCRAP"
+
+    all: []
+      # Removes from ALL tiers (normal, balanced, and op)
+      # - "SNOWBALL"
+    # - "EGG"
+
+  # Custom items to ADD to loot tables
+  custom-items:
+    # Items added ONLY to Normal tier
+    normal: []
+      # Example: Add custom normal tier items
+      # - "STONE_PICKAXE:1:8"          # 1 stone pickaxe, weight 8
+      # - "COOKED_SALMON:4:8:10"       # 4-8 cooked salmon, weight 10
+    # - "TORCH:16:32:12"             # 16-32 torches, weight 12
+
+    # Items added ONLY to Balanced tier
+    balanced: []
+      # Example: Add custom balanced tier items
+      # - "IRON_INGOT:4:8:6"           # 4-8 iron ingots, weight 6
+      # - "GOLD_INGOT:2:6:5"           # 2-6 gold ingots, weight 5
+    # - "ENDER_PEARL:1:3:4"          # 1-3 ender pearls, weight 4
+
+    # Items added ONLY to OP tier
+    op: []
+      # Example: Add custom OP tier items
+      # - "DIAMOND:2:6:4"              # 2-6 diamonds, weight 4
+      # - "NETHERITE_INGOT:1:2:2"      # 1-2 netherite ingots, weight 2
+      # - "ENCHANTED_GOLDEN_APPLE:1:2:3" # 1-2 god apples, weight 3
+    # - "TOTEM_OF_UNDYING:1:1"       # 1 totem, weight 1 (very rare)
+
+    # Items added to ALL tiers (normal, balanced, AND op)
+    all: []
+      # Example: Universal items that appear everywhere
+      # - "WATER_BUCKET:1:6"           # 1 water bucket, weight 6
+      # - "GOLDEN_APPLE:1:2:5"         # 1-2 golden apples, weight 5
+    # - "ENDER_PEARL:1:4"            # 1 ender pearl, weight 4
+
+  # ========================
+  # EXAMPLE CONFIGURATION
+  # ========================
+  # Here's a complete example setup:
+  #
+  # remove-defaults:
+  #   normal:
+  #     - "WOODEN_SWORD"      # Remove weak wooden sword
+  #     - "DIRT"              # Remove dirt from loot
+  #   balanced:
+  #     - "CHAINMAIL_HELMET"  # Remove chainmail from balanced
+  #   op:
+  #     - "DIAMOND_HELMET"    # Make OP tier harder
+  #
+  # custom-items:
+  #   normal:
+  #     - "STONE_SWORD:1:12"         # Add more stone swords
+  #     - "BREAD:8:16:15"            # Add lots of bread
+  #   balanced:
+  #     - "IRON_SWORD:1:10"          # Better weapons in balanced
+  #     - "IRON_INGOT:4:12:8"        # More iron for crafting
+  #   op:
+  #     - "DIAMOND_SWORD:1:8"        # More diamond swords
+  #     - "NETHERITE_INGOT:1:1:3"    # Rare netherite
+  #   all:
+  #     - "GOLDEN_APPLE:1:5"         # Golden apples in all modes
+  #     - "WATER_BUCKET:1:6"         # Water buckets everywhere
+  #
+  # ========================
+
+  # ========================
+  # LOOT TABLES (LEGACY)
+  # ========================
+  # ⚠️ DEPRECATION WARNING:
+  # These old-style loot tables are being phased out.
+  # Use 'custom-items' and 'remove-defaults' above instead.
+  # These sections will be removed in a future version.
+  #
+  # These are kept for backward compatibility but won't
+  # affect loot if you use the new system above.
+  # ========================
+
+  normal:
+    common:
+      # Weapons
+      - "STONE_SWORD:1"
+      - "WOODEN_SWORD:1"
+      - "WOODEN_AXE:1"
+
+      # Armor
+      - "LEATHER_HELMET:1"
+      - "LEATHER_CHESTPLATE:1"
+      - "LEATHER_LEGGINGS:1"
+      - "LEATHER_BOOTS:1"
+
+      # Food
+      - "COOKED_BEEF:8"
+      - "BREAD:16"
+      - "APPLE:4"
+      - "COOKED_CHICKEN:8"
+
+      # Blocks
+      - "OAK_PLANKS:32"
+      - "COBBLESTONE:32"
+      - "DIRT:16"
+      - "SAND:16"
+      - "GRAVEL:16"
+      - "GLASS:16"
+      - "OAK_LOG:8"
+      - "STONE:16"
+      - "STONE_BRICKS:16"
+      - "BRICKS:16"
+      - "WHITE_WOOL:16"
+      - "LADDER:8"
+      - "SCAFFOLDING:16"
+
+      # Projectiles
+      - "ARROW:16"
+      - "SNOWBALL:8"
+      - "EGG:8"
+
+      # Redstone
+      - "REDSTONE:8"
+      - "LEVER:2"
+      - "PISTON:2"
+
+    uncommon:
+      # Weapons
+      - "IRON_SWORD:1"
+      - "IRON_AXE:1"
+      - "BOW:1"
+
+      # Armor
+      - "IRON_HELMET:1"
+      - "IRON_CHESTPLATE:1"
+      - "IRON_LEGGINGS:1"
+      - "IRON_BOOTS:1"
+      - "CHAINMAIL_HELMET:1"
+      - "CHAINMAIL_CHESTPLATE:1"
+      - "CHAINMAIL_LEGGINGS:1"
+      - "CHAINMAIL_BOOTS:1"
+
+      # Tools
+      - "IRON_PICKAXE:1"
+      - "FISHING_ROD:1"
+      - "FLINT_AND_STEEL:1"
+      - "SHIELD:1"
+
+      # Food
+      - "GOLDEN_APPLE:2"
+      - "GOLDEN_CARROT:4"
+
+      # Blocks
+      - "IRON_BLOCK:4"
+      - "OBSIDIAN:8"
+      - "SLIME_BLOCK:8"
+      - "HONEY_BLOCK:8"
+      - "TNT:4"
+      - "COBWEB:4"
+      - "HAY_BLOCK:8"
+      - "NETHERRACK:16"
+      - "SOUL_SAND:16"
+      - "MAGMA_BLOCK:8"
+      - "NETHER_BRICKS:16"
+      - "GLOWSTONE:8"
+      - "SEA_LANTERN:4"
+      - "PACKED_ICE:8"
+      - "BLUE_ICE:4"
+
+      # Special
+      - "ENDER_PEARL:2"
+      - "EXPERIENCE_BOTTLE:4"
+      - "CROSSBOW:1"
+
+    rare:
+      # Weapons
+      - "DIAMOND_SWORD:1"
+      - "DIAMOND_AXE:1"
+      - "TRIDENT:1"
+
+      # Armor
+      - "DIAMOND_HELMET:1"
+      - "DIAMOND_CHESTPLATE:1"
+      - "DIAMOND_LEGGINGS:1"
+      - "DIAMOND_BOOTS:1"
+      - "ELYTRA:1"
+
+      # Blocks
+      - "DIAMOND_BLOCK:1"
+      - "EMERALD_BLOCK:1"
+      - "GOLD_BLOCK:2"
+      - "ANCIENT_DEBRIS:1"
+      - "CRYING_OBSIDIAN:4"
+      - "END_STONE:16"
+      - "PURPUR_BLOCK:16"
+      - "END_STONE_BRICKS:16"
+      - "SHROOMLIGHT:8"
+      - "AMETHYST_BLOCK:4"
+      - "BUDDING_AMETHYST:1"
+
+      # Special
+      - "ENCHANTED_GOLDEN_APPLE:1"
+      - "TOTEM_OF_UNDYING:1"
+      - "ENDER_EYE:2"
+      - "ENCHANTED_BOOK:1"
+
+    # Drop chances (must add up to 100)
+    chances:
+      common: 60
+      uncommon: 30
+      rare: 10
+
+  # Balanced mode loot (mid-tier only)
+  balanced:
+    items:
+      # Weapons
+      - "STONE_SWORD:1"
+      - "IRON_SWORD:1"
+      - "BOW:1"
+      - "ARROW:32"
+
+      # Armor
+      - "CHAINMAIL_HELMET:1"
+      - "CHAINMAIL_CHESTPLATE:1"
+      - "CHAINMAIL_LEGGINGS:1"
+      - "CHAINMAIL_BOOTS:1"
+
+      # Food
+      - "COOKED_BEEF:16"
+      - "GOLDEN_APPLE:3"
+
+      # Blocks
+      - "OAK_PLANKS:64"
+      - "COBBLESTONE:64"
+      - "STONE_BRICKS:32"
+      - "GLASS:32"
+      - "OBSIDIAN:16"
+      - "IRON_BLOCK:8"
+      - "SLIME_BLOCK:16"
+      - "TNT:8"
+      - "LADDER:16"
+
+      # Special
+      - "ENDER_PEARL:2"
+      - "SHIELD:1"
+
+  # OP mode loot (high-tier)
+  op:
+    items:
+      # Weapons
+      - "DIAMOND_SWORD:1"
+      - "NETHERITE_SWORD:1"
+      - "BOW:1"
+      - "CROSSBOW:1"
+      - "TRIDENT:1"
+      - "MACE:1"
+
+      # Armor
+      - "DIAMOND_HELMET:1"
+      - "DIAMOND_CHESTPLATE:1"
+      - "DIAMOND_LEGGINGS:1"
+      - "DIAMOND_BOOTS:1"
+      - "NETHERITE_HELMET:1"
+      - "NETHERITE_CHESTPLATE:1"
+      - "NETHERITE_LEGGINGS:1"
+      - "NETHERITE_BOOTS:1"
+      - "ELYTRA:1"
+
+      # Food
+      - "ENCHANTED_GOLDEN_APPLE:3"
+      - "GOLDEN_APPLE:8"
+
+      # Blocks
+      - "DIAMOND_BLOCK:4"
+      - "EMERALD_BLOCK:4"
+      - "NETHERITE_BLOCK:2"
+      - "OBSIDIAN:32"
+      - "TNT:16"
+      - "END_CRYSTAL:4"
+      - "ANCIENT_DEBRIS:2"
+      - "CRYING_OBSIDIAN:16"
+
+      # Special
+      - "TOTEM_OF_UNDYING:2"
+      - "ENDER_PEARL:8"
+      - "ENCHANTED_BOOK:3"
+      - "WIND_CHARGE:16"
+
+# ===========================================
+# CHEST SPAWN SETTINGS
+# ===========================================
+chests:
+  spawn-interval: 60  # seconds between chest spawns
+  max-chests: 10      # maximum chests in arena at once
+  despawn-time: 120   # seconds before chest despawns
+
+# ===========================================
+# GAME MODE SPECIFIC SETTINGS
+# ===========================================
+game-modes:
+  swapper:
+    interval: 30 # seconds between position swaps
+
+  shuffle:
+    interval: 60 # seconds between inventory shuffles
+
+  lava-rising:
+    rise-interval: 10 # seconds per lava layer rise
+
+  border-shrink:
+    shrink-time: 300  # total seconds to shrink (5 minutes)
+    final-size: 20    # final border size in blocks
+
+  speed-uhc:
+    speed-level: 1 # Speed potion amplifier (0 = Speed I, 1 = Speed II)
+
+  tnt-rain:
+    spawn-interval: 5 # seconds between TNT spawns
+    min-tnt: 1
+    max-tnt: 3
+
+# ===========================================
+# ARENA SETTINGS
+# ===========================================
+arena:
+  default-cage-material: GLASS
+  cage-size: 3 # 3x3x3 cage around spawn points
+  max-cages: 20 # Maximum number of cages per arena
+
+# ===========================================
+# LOBBY SETTINGS
+# ===========================================
+lobby:
+  world: world
+  x: 0.5
+  y: 100.0
+  z: 0.5
+  yaw: 0.0
+  pitch: 0.0
+
+# ===========================================
+# MESSAGES
+# ===========================================
+# Supports MiniMessage format
+# Colors: <red>, <green>, <blue>, <yellow>, <gold>, <aqua>, <white>, <gray>, etc.
+# Formatting: <bold>, <italic>, <underlined>, <strikethrough>
+# Gradients: <gradient:#COLOR1:#COLOR2>text</gradient>
+# Hover/Click: <hover:show_text:'text'>, <click:run_command:'/cmd'>
+messages:
+  prefix: "<gradient:#FFD700:#FFA500><bold>FortunePillars</bold></gradient> <dark_gray>»</dark_gray> "
+
+# ===========================================
+# COSMETICS
+# ===========================================
+cosmetics:
+  enabled: true
+  win-fireworks: true
+  firework-count: 5
+
+# ===========================================
+# CHAT SETTINGS
+# ===========================================
+chat:
+  # Set to false to disable arena-specific chat formatting
+  # Players will use normal server chat even in arenas
+  arena-chat-enabled: false
+
+  # States where arena chat is active (only if enabled above)
+  arena-chat-states:
+    - WAITING
+    - STARTING
+    - IN_GAME
+
+# ===========================================
+# SOUND SETTINGS
+# ===========================================
+# All sounds are fully configurable here.
+#
+# sound: The Bukkit sound name (ALL_CAPS)
+#   Full list: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html
+#   Set to "none" or leave empty to disable a specific sound
+#
+# volume: How loud (0.0 = silent, 1.0 = normal, 2.0 = loud)
+#   Note: Players only hear sounds within a certain radius based on volume
+#
+# pitch: How high/low the sound is (0.5 = very low, 1.0 = normal, 2.0 = very high)
+#
+# enabled: Set to false to disable this specific sound
+#
+sounds:
+  # Master toggle - set false to disable ALL sounds
+  enabled: true
+
+  # GUI click sound (buttons, menus)
+  click:
+    sound: UI_BUTTON_CLICK
+    volume: 0.5
+    pitch: 1.0
+    enabled: true
+
+  # Success/positive action
+  success:
+    sound: ENTITY_PLAYER_LEVELUP
+    volume: 0.7
+    pitch: 1.2
+    enabled: true
+
+  # Error/denied action
+  error:
+    sound: ENTITY_VILLAGER_NO
+    volume: 0.7
+    pitch: 1.0
+    enabled: true
+
+  # Countdown tick (every second)
+  countdown:
+    sound: BLOCK_NOTE_BLOCK_PLING
+    volume: 1.0
+    pitch: 1.0
+    enabled: true
+
+  # Countdown final seconds (last 5)
+  countdown-final:
+    sound: BLOCK_NOTE_BLOCK_PLING
+    volume: 1.0
+    pitch: 2.0
+    enabled: true
+
+  # Countdown cancelled / not enough players
+  countdown-stop:
+    sound: BLOCK_NOTE_BLOCK_BASS
+    volume: 1.0
+    pitch: 0.8
+    enabled: true
+
+  # Game starts
+  game-start:
+    sound: ENTITY_ENDER_DRAGON_GROWL
+    volume: 0.5
+    pitch: 1.5
+    enabled: true
+
+  # Game ends (for all players)
+  game-end:
+    sound: UI_TOAST_CHALLENGE_COMPLETE
+    volume: 1.0
+    pitch: 0.8
+    enabled: true
+
+  # Player eliminated
+  elimination:
+    sound: ENTITY_WITHER_SPAWN
+    volume: 0.3
+    pitch: 1.5
+    enabled: true
+
+  # Winner victory sound
+  victory:
+    sound: UI_TOAST_CHALLENGE_COMPLETE
+    volume: 1.0
+    pitch: 1.0
+    enabled: true
+
+  # Loot received by player
+  loot-received:
+    sound: ENTITY_ITEM_PICKUP
+    volume: 0.5
+    pitch: 1.2
+    enabled: true
+
+  # Loot drops into arena
+  loot-drop:
+    sound: ENTITY_EXPERIENCE_ORB_PICKUP
+    volume: 0.8
+    pitch: 1.0
+    enabled: true
+
+  # Player teleported
+  teleport:
+    sound: ENTITY_ENDERMAN_TELEPORT
+    volume: 1.0
+    pitch: 1.0
+    enabled: true
+
+  # Warning (border, lava, etc.)
+  warning:
+    sound: BLOCK_NOTE_BLOCK_BASS
+    volume: 1.0
+    pitch: 0.5
+    enabled: true
+
+  # Player joins arena
+  join-arena:
+    sound: ENTITY_PLAYER_LEVELUP
+    volume: 0.5
+    pitch: 1.0
+    enabled: true
+
+  # Player leaves arena
+  leave-arena:
+    sound: ENTITY_ENDERMAN_TELEPORT
+    volume: 0.5
+    pitch: 0.8
+    enabled: true
+
+  # Grace period ends (PvP enabled)
+  grace-period-end:
+    sound: ENTITY_ENDER_DRAGON_GROWL
+    volume: 0.4
+    pitch: 1.2
+    enabled: true
+
+  # Player becomes spectator
+  spectate:
+    sound: ENTITY_BAT_TAKEOFF
+    volume: 0.7
+    pitch: 1.0
+    enabled: true
+
+  # Player casts a vote
+  vote:
+    sound: UI_BUTTON_CLICK
+    volume: 0.6
+    pitch: 1.3
+    enabled: true
+
+# ===========================================
+# SCOREBOARD SETTINGS
+# ===========================================
+scoreboard:
+  # Enable/disable scoreboard globally
+  enabled: true
+
+  # Scoreboard title (supports MiniMessage format)
+  title: "<gradient:#FFD700:#FFA500><bold>FortunePillars</bold></gradient>"
+
+  # Update interval in ticks (20 ticks = 1 second)
+  # Lower = more frequent updates (may cause lag)
+  # Higher = less frequent updates (better performance)
+  update-interval: 20
+
+  # Scoreboard lines (supports MiniMessage + placeholders)
+  # Available placeholders:
+  #   {arena} - Arena name
+  #   {state} - Game state (colored)
+  #   {mode} - Game mode name
+  #   {time} - Game time (MM:SS)
+  #   {alive} - Alive player count
+  #   {spectators} - Spectator count
+  #   {total} - Total players
+  #   {kills} - Player's kills (only shown if alive)
+  #   {spectator_text} - Shows "👁 Spectating" if player is spectator
+  #   {loot_mode} - Current loot mode
+  lines:
+    - ""
+    - "<gray>Arena: <white>{arena}"
+    - ""
+    - "<gray>Status: {state}"
+    - "<gray>Mode: <yellow>{mode}"
+    - " "
+    - "<gray>Time: <white>{time}"
+    - "  "
+    - "<gray>Alive: <green>{alive}"
+    - "<gray>Spectating: <yellow>{spectators}"
+    - "<gray>Total: <white>{total}"
+    - "   "
+    - "<gray>Your Kills: <red>{kills}"
+    - "    "
+    - "{spectator_text}"
+    - "     "
+    - "<gold>play.yourserver.com"
+
+# ===========================================
+# DEBUG SETTINGS
+# ===========================================
+debug:
+  # Enable verbose logging (shows detailed manager info)
+  verbose: false
+
+  # Log loot drops (for debugging loot system)
+  log-loot-drops: false
+
+  # Log game state changes
+  log-state-changes: false
+
+  # Log schematic operations (save/restore progress)
+  verbose-schematics: false
+
+# ===========================================
+# WORLD BLACKLIST
+# ===========================================
+# Worlds where the plugin is completely disabled
+# Players in these worlds cannot:
+#   - Use any /tof commands
+#   - Join arenas
+#   - Interact with signs
+#   - See scoreboards
+#   - Access any plugin features
+#
+# TIP: Use /tof blacklistworld add <worldname> instead of editing this file
+world-blacklist:
+# - "world_creative"
+# - "world_event"
+# - "hub"
